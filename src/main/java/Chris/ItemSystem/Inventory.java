@@ -2,6 +2,7 @@ package Chris.ItemSystem;
 
 import java.util.ArrayList;
 
+import Chris.*;
 import Chris.ItemSystem.ItemTypes.*;
 
 public class Inventory implements java.io.Serializable {
@@ -209,12 +210,12 @@ public class Inventory implements java.io.Serializable {
 
     public void printInventoryList() {
         if (items.size() > 0) {
-            System.out.println("\nInventory contents:");
+            GUI.println("\nInventory contents:");
             for (int i = 0; i < items.size(); i++) {
-                System.out.println(itemAmounts.get(i) + "x " + items.get(i).getName());
+                GUI.println(itemAmounts.get(i) + "x " + items.get(i).getName());
             }
         } else {
-            System.out.println("Inventory empty.");
+            GUI.println("Inventory empty.");
         }
     }
 

@@ -20,7 +20,7 @@ import java.time.*;
 
 
 
-public class Main {
+public class Runner {
     public static Scanner input;
     public static ItemRegistry reg;
 
@@ -34,7 +34,7 @@ public class Main {
 
     static Consumer<String> inputQueue = null;
 
-    public static void main(String[] args) {
+    public Runner() {
         input = new Scanner(System.in);
 
         new Inventory();
@@ -42,12 +42,13 @@ public class Main {
 
         Inventory.current.addItem(reg.findItem("Plank"), 3);
         Inventory.current.addItem(reg.findItem("Stick"), 2);
-        Inventory.current.printInventoryList();
+        
 
         mine = (ItemPool) reg.gatheringAreas.get(0);
         forest = (ItemPool) reg.gatheringAreas.get(1);
 
         userInterface = new GUI();
+        GUI.println("Tets");
         
         while (true) {
             String consoleInput = input.nextLine();
@@ -64,80 +65,80 @@ public class Main {
     }
 
     public static void printHelpPage(HelpPages page) {
-        userInterface.clear();
+        GUI.clear();
         switch (page) {
             case ALL:
                 printHelpPage(HelpPages.DEFAULT);
-                userInterface.println();
+                GUI.println();
                 printHelpPage(HelpPages.INVENTORY);
-                userInterface.println();
+                GUI.println();
                 printHelpPage(HelpPages.MINING);
                 break;
 
             case DEFAULT:
-                userInterface.println("    Help & Settings");
-                userInterface.println("───────────────────");
-                userInterface.println("help / ?:");
-                userInterface.println("    Shows a list of basic commands for settings and information");
-                userInterface.println();
-                userInterface.println("help (category) / (category)?:");
-                userInterface.println("    Shows a list of all commands in a specific catergory including:");
-                userInterface.println("    all, inventory / inv, mining");
-                userInterface.println();
-                userInterface.println("suggest:");
-                userInterface.println("    Allows you to suggest something for the program");
+                GUI.println("    Help & Settings");
+                GUI.println("───────────────────");
+                GUI.println("help / ?:");
+                GUI.println("    Shows a list of basic commands for settings and information");
+                GUI.println();
+                GUI.println("help (category) / (category)?:");
+                GUI.println("    Shows a list of all commands in a specific catergory including:");
+                GUI.println("    all, inventory / inv, mining");
+                GUI.println();
+                GUI.println("suggest:");
+                GUI.println("    Allows you to suggest something for the program");
                 break;
 
             case INVENTORY:
-                userInterface.println("    Inventory & Items");
-                userInterface.println("─────────────────────");
-                userInterface.println("stats:");
-                userInterface.println("    Shows basic stats");
-                userInterface.println();
-                userInterface.println("inv / inventory / show inventory / list inventory:");
-                userInterface.println("    Shows a list of all items and their amounts in the inventory");
-                userInterface.println();
-                userInterface.println("money / credits:");
-                userInterface.println("    Shows the amount of credits you posess");
-                userInterface.println();
-                userInterface.println("save:");
-                userInterface.println("    Prompts for a name to save the current inventory to in order to load later");
-                userInterface.println();
-                userInterface.println("load:");
-                userInterface.println("    Prompts for a name to load a previously saved inventory");
-                userInterface.println();
-                userInterface.println("list items / item list:");
-                userInterface.println(
+                GUI.println("    Inventory & Items");
+                GUI.println("─────────────────────");
+                GUI.println("stats:");
+                GUI.println("    Shows basic stats");
+                GUI.println();
+                GUI.println("inv / inventory / show inventory / list inventory:");
+                GUI.println("    Shows a list of all items and their amounts in the inventory");
+                GUI.println();
+                GUI.println("money / credits:");
+                GUI.println("    Shows the amount of credits you posess");
+                GUI.println();
+                GUI.println("save:");
+                GUI.println("    Prompts for a name to save the current inventory to in order to load later");
+                GUI.println();
+                GUI.println("load:");
+                GUI.println("    Prompts for a name to load a previously saved inventory");
+                GUI.println();
+                GUI.println("list items / item list:");
+                GUI.println(
                         "    Shows a list of every item");
-                userInterface.println();
-                userInterface.println("show recipes / recipes:");
-                userInterface.println(
+                GUI.println();
+                GUI.println("show recipes / recipes:");
+                GUI.println(
                         "    Prompts you to input an item's name, then displays the recipes of the item in order of priority when a recipe is not specified");
-                userInterface.println();
-                userInterface.println("show recipes (item) / recipes (item):");
-                userInterface.println("    Shows the recipes of the item whose name was given in order of priority when a recipe is not specified");
-                userInterface.println();
-                userInterface.println("craft:");
-                userInterface.println("    Prompts you to input an item's name, then attempts to craft the item with a given recipe");
-                userInterface.println();
-                userInterface.println("craft (item):");
-                userInterface.println("    Attempts to craft the item whose name was given");
+                GUI.println();
+                GUI.println("show recipes (item) / recipes (item):");
+                GUI.println("    Shows the recipes of the item whose name was given in order of priority when a recipe is not specified");
+                GUI.println();
+                GUI.println("craft:");
+                GUI.println("    Prompts you to input an item's name, then attempts to craft the item with a given recipe");
+                GUI.println();
+                GUI.println("craft (item):");
+                GUI.println("    Attempts to craft the item whose name was given");
                 break;
 
             case MINING:
-                userInterface.println("    Resource Gathering");
-                userInterface.println("──────────────────────");
-                userInterface.println("forage:");
-                userInterface.println("    Finds random things in the forest");
-                userInterface.println();
-                userInterface.println("lumber / chop:");
-                userInterface.println("    If you have an axe, chops logs and uses one durability of your axe");
-                userInterface.println();
-                userInterface.println("mine:");
-                userInterface.println("    If you have a pickaxe, mines a random ore and uses one durability of your pickaxe");
-                userInterface.println();
-                userInterface.println("shop / store:");
-                userInterface.println("    Allows you to spend your credits to purchase items");
+                GUI.println("    Resource Gathering");
+                GUI.println("──────────────────────");
+                GUI.println("forage:");
+                GUI.println("    Finds random things in the forest");
+                GUI.println();
+                GUI.println("lumber / chop:");
+                GUI.println("    If you have an axe, chops logs and uses one durability of your axe");
+                GUI.println();
+                GUI.println("mine:");
+                GUI.println("    If you have a pickaxe, mines a random ore and uses one durability of your pickaxe");
+                GUI.println();
+                GUI.println("shop / store:");
+                GUI.println("    Allows you to spend your credits to purchase items");
         }
     }
     
@@ -149,9 +150,9 @@ public class Main {
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(Inventory.current);
             oos.close();
-            userInterface.println("Succesfully saved under name '" + saveName + "'");
+            GUI.println("Succesfully saved under name '" + saveName + "'");
         } catch (IOException ex) {
-            userInterface.println("ERROR SAVING:\n" + ex);
+            GUI.println("ERROR SAVING:\n" + ex);
         }
     }
 
@@ -165,21 +166,21 @@ public class Main {
             ois.close();
             Inventory.current = invL;
             reg = Inventory.current.getItemRegistry();
-            userInterface.println("Succesfully loaded file under name '" + saveName + "'");
+            GUI.println("Succesfully loaded file under name '" + saveName + "'");
             Inventory.current.printInventoryList();
         } catch (IOException ex) {
-            userInterface.println("ERROR LOADING SAVE:\n" + ex);
+            GUI.println("ERROR LOADING SAVE:\n" + ex);
         } catch (ClassNotFoundException ex) {
-            userInterface.println("PROGRAM MISSING FILES:\n" + ex);
+            GUI.println("PROGRAM MISSING FILES:\n" + ex);
         }
     }
 
     public static void suggestHandle(String textToAdd) {
         try {
                 Files.write(Paths.get("src/main/java/SaveData/suggestions.md"), (textToAdd + "\n").getBytes(), StandardOpenOption.APPEND);
-            userInterface.println("Suggestion taken!");
+            GUI.println("Suggestion taken!");
         } catch (IOException e) {
-            userInterface.println("An error occurred:");
+            GUI.println("An error occurred:");
             e.printStackTrace();
         }
     }
@@ -188,7 +189,7 @@ public class Main {
         String toCraft;
         if (itemToCraft == "")
         {
-            userInterface.println("Enter the name of the item you would like to craft.");
+            GUI.println("Enter the name of the item you would like to craft.");
             toCraft = input.nextLine();
         }
         else
@@ -199,7 +200,7 @@ public class Main {
         if (reg.findItem(toCraft) != null) {
             int recipeIndex;
             if (reg.findItem(toCraft).getRecipes().size() > 1) {
-                userInterface.println("Enter the number of the recipe you would like to use (use recipes command to view recipes)");
+                GUI.println("Enter the number of the recipe you would like to use (use recipes command to view recipes)");
                 String recipeIndexString = input.nextLine();
                 try {
                     recipeIndex = Integer.parseInt(recipeIndexString);
@@ -214,7 +215,7 @@ public class Main {
                 recipeIndex = 0;
             }
 
-            userInterface.println("Enter the amount of times you would like to craft (or -1 to cancel)");
+            GUI.println("Enter the amount of times you would like to craft (or -1 to cancel)");
             String recipeAmountString = input.nextLine();
             int amount;
             try {
@@ -232,26 +233,26 @@ public class Main {
                 Inventory.current.craft(r);
                 if (amount > 1 || r.yield > 1)
                 {
-                    userInterface.println("Crafted " + (amount * r.yield) + " " + reg.findItem(toCraft).getName() + "s");
+                    GUI.println("Crafted " + (amount * r.yield) + " " + reg.findItem(toCraft).getName() + "s");
                 }
                 else
                 {
-                    userInterface.println("Crafted a " + reg.findItem(toCraft).getName());
+                    GUI.println("Crafted a " + reg.findItem(toCraft).getName());
                 }
             }
             else
             {
                 if (amount > 1 || r.yield > 1)
                 {
-                    userInterface.println("You do not have enough materials to craft " + (amount * r.yield) + " " + reg.findItem(toCraft).getName() + "s");
+                    GUI.println("You do not have enough materials to craft " + (amount * r.yield) + " " + reg.findItem(toCraft).getName() + "s");
                 }
                 else
                 {
-                    userInterface.println("You do not have enough materials to craft a " + reg.findItem(toCraft).getName());
+                    GUI.println("You do not have enough materials to craft a " + reg.findItem(toCraft).getName());
                 }
             }
         } else {
-            userInterface.println("Item does not exist.");
+            GUI.println("Item does not exist.");
         }
     }
 
@@ -259,7 +260,7 @@ public class Main {
         String toFind;
         if (itemToRecipe == "")
         {
-            userInterface.println("Enter the name of the item you would like to view the recipes of");
+            GUI.println("Enter the name of the item you would like to view the recipes of");
             toFind = input.nextLine();
         }
         else
@@ -270,10 +271,10 @@ public class Main {
         
         Item search = reg.findItem(toFind);
         if (search != null) {
-            userInterface.println();
+            GUI.println();
             search.printRecipes();
         } else {
-            userInterface.println("Item not found.");
+            GUI.println("Item not found.");
         }
     }
     
@@ -339,13 +340,13 @@ public class Main {
                 switch (consoleInput) {
                     // Help & Settings
                     case "save": {
-                        userInterface.println("Choose a name for your savefile:");
-                        inputQueue = Main::saveHandle;
+                        GUI.println("Choose a name for your savefile:");
+                        inputQueue = Runner::saveHandle;
                         break;
                     }
                     case "load": {
-                        userInterface.println("Enter the name of the savefile to load:");
-                        inputQueue = Main::loadHandle;  
+                        GUI.println("Enter the name of the savefile to load:");
+                        inputQueue = Runner::loadHandle;  
                         break;
                     }
                     case "help all":
@@ -371,14 +372,14 @@ public class Main {
                         break;
                     }
                     case "suggest": {
-                        userInterface.println("Type your suggestion");
-                        inputQueue = Main::suggestHandle;
+                        GUI.println("Type your suggestion");
+                        inputQueue = Runner::suggestHandle;
                         break;
                     }
                     // Inventory & Items
                     case "stats": {
-                        userInterface.println("Health:");
-                        userInterface.println(Inventory.current.health + "/" + Inventory.current.maxHealth);
+                        GUI.println("Health:");
+                        GUI.println(Inventory.current.health + "/" + Inventory.current.maxHealth);
                     }
                     case "inv":
                     case "inventory":
@@ -394,7 +395,7 @@ public class Main {
                     }
                     case "credits":
                     case "money": {
-                        userInterface.println("You have: " + Inventory.current.getCreditsText() + " Credits.");
+                        GUI.println("You have: " + Inventory.current.getCreditsText() + " Credits.");
                         break;
                     }
                     // Resource Gathering
@@ -403,10 +404,10 @@ public class Main {
                             if (pick != null) {
                                 Item mined = mine.getItem();
                                 Inventory.current.addItem(mined);
-                                userInterface.println("Mined a " + mined.getName() + ".");
+                                GUI.println("Mined a " + mined.getName() + ".");
                                 pick.use();
                             } else {
-                                userInterface.println("No pickaxe in inventory.");
+                                GUI.println("No pickaxe in inventory.");
                             }
                             break;
                         }
@@ -418,28 +419,28 @@ public class Main {
                                 Inventory.current.addItem(reg.findItem("Log"), ra);
                                 if (ra > 1)
                                 {
-                                    userInterface.println("Chopped " + ra + " logs.");
+                                    GUI.println("Chopped " + ra + " logs.");
                                 }
                                 else
                                 {
-                                    userInterface.println("Chopped a log.");
+                                    GUI.println("Chopped a log.");
                                 }
 
                                 axe.use();
                             } else {
-                                userInterface.println("No axe in inventory.");
+                                GUI.println("No axe in inventory.");
                             }
                             break;
                         }
                         case "forage": {
                             Item gotten = forest.getItem();
                             Inventory.current.addItem(gotten);
-                            userInterface.println("Found a " + gotten.getName() + ".");
+                            GUI.println("Found a " + gotten.getName() + ".");
                             break;
                         }
                         case "shop":
                         case "store": {
-                            userInterface.clear();
+                            GUI.clear();
                             if (lastShop == null)
                             {
                                 lastShop = Instant.now();
@@ -459,27 +460,27 @@ public class Main {
 
                             if ((int)diff < 0)
                             {
-                                userInterface.println("Shop has reset");
+                                GUI.println("Shop has reset");
                             }
                             else
                             {
                                 if (diff % 60 < 10)
                                 {
-                                    userInterface.println("Shop will reset in " + (diff / 60) + ":0" + (diff % 60));
+                                    GUI.println("Shop will reset in " + (diff / 60) + ":0" + (diff % 60));
                                 }
                                 else
                                 {
-                                    userInterface.println("Shop will reset in " + (diff / 60) + ":" + (diff % 60));
+                                    GUI.println("Shop will reset in " + (diff / 60) + ":" + (diff % 60));
                                 }
                             }
                             currentShop.printShop();
-                            userInterface.println("What would you like to buy?");
+                            GUI.println("What would you like to buy?");
                             inputQueue = currentShop::buy;
                             break;
                         }
         // Unknown
                     default: {
-                        userInterface.println("Command not recognised.");
+                        GUI.println("Command not recognised.");
                     }
                 }
             }

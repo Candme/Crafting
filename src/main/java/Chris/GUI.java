@@ -18,6 +18,8 @@ import Chris.ItemSystem.GatheringAreas.*;
 
 public class GUI
 {
+    public static GUI currentGUI;
+    
     JTextArea statsCreditsText;
     JTextArea statsInventory;
     JTextField mainInputText;
@@ -25,6 +27,7 @@ public class GUI
     
     public GUI()
     {
+        currentGUI = this;
         Border buttonBorder = BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0), BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
         JFrame window = new JFrame("The thing");
@@ -32,7 +35,7 @@ public class GUI
         window.setLayout(new BorderLayout());
         window.setSize(500, 360);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setBackground(new Color(150, 150, 180));
+        window.setBackground(new Color(236, 236, 236));
 
         Color bgColor = window.getBackground();
 
@@ -130,37 +133,39 @@ public class GUI
         update();
     }
 
-    public void update()
+    public static void update()
     {
-        statsInventory.setText(Inventory.current.toString());
-        statsCreditsText.setText("₡ " + Inventory.current.getCreditsText());
+        currentGUI.statsInventory.setText(Inventory.current.toString());
+        currentGUI.statsCreditsText.setText("₡ " + Inventory.current.getCreditsText());
     }
 
-    public void takeInput()
+    public static void takeInput()
     {
-        String input = mainInputText.getText();
-        mainInputText.setText("");
+        String input = currentGUI.mainInputText.getText();
+        currentGUI.mainInputText.setText("");
         Main.processInput(input);
         update();
     }
 
-    public void println()
+    public static void println()
     {
-        mainOutput.setText(mainOutput.getText() + "\n");
+        currentGUI.mainOutput.setText(currentGUI.mainOutput.getText() + "\n");
     }
     
-    public void println(String s)
+    public static void println(String s)
     {
-        mainOutput.setText(mainOutput.getText() + s + "\n");
+        currentGUI.mainOutput.setText(currentGUI.mainOutput.getText() + s + "\n");
     }
 
-    public void print(String s)
+    public static void print(String s)
     {
-        mainOutput.setText(mainOutput.getText() + s);
+        currentGUI.mainOutput.setText(currentGUI.mainOutput.getText() + s);
     }
 
-    public void clear()
+    public static void clear()
     {
-        mainOutput.setText("");
+        currentGUI.mainOutput.setText("");
     }
+
+    
 }

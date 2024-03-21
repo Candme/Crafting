@@ -43,13 +43,13 @@ public class Shop implements java.io.Serializable
 
                   if (amounts.get(index) > 1)
                   {
-                     Main.userInterface.println("Bought " + amounts.get(index) + " " + items.get(index).getName() + "s");
+                     GUI.println("Bought " + amounts.get(index) + " " + items.get(index).getName() + "s");
                   }
                   else
                   {
-                     Main.userInterface.println("Bought a " + items.get(index).getName());
+                     GUI.println("Bought a " + items.get(index).getName());
                   }
-                  Main.userInterface.println("You have " + Inventory.current.getCreditsText() + " credits remaining");
+                  GUI.println("You have " + Inventory.current.getCreditsText() + " credits remaining");
 
                   items.set(index, null);
                   amounts.set(index, -1);
@@ -67,42 +67,40 @@ public class Shop implements java.io.Serializable
          {
             if (itemFlag)
             {
-               Main.userInterface.println("You do not have enough money");
+               GUI.println("You do not have enough money");
             }
          }
          else
          {
-            Main.userInterface.println("Item not in stock"); 
+            GUI.println("Item not in stock"); 
          }
       }
       else
       {
-         Main.userInterface.println("Item does not exist");
+         GUI.println("Item does not exist");
       }
    }
 
    public void printShop()
    {
-      Main.userInterface.println("Shop:");
+      GUI.println("Shop:");
       for (int i = 0; i < items.size(); i++)
       {
          if (items.get(i) != null)
          {
             if (amounts.get(i) > 1)
             {
-               Main.userInterface.println(amounts.get(i) + "x " + items.get(i).getName() + "s\n    ₡ " + Inventory.current.getCreditsText(prices.get(i)));
+               GUI.println(amounts.get(i) + "x " + items.get(i).getName() + "s\n    ₡ " + Inventory.current.getCreditsText(prices.get(i)));
             }
             else
             {
-               Main.userInterface.println("1x " + items.get(i).getName() + "\n    ₡ " + Inventory.current.getCreditsText(prices.get(i)));
+               GUI.println("1x " + items.get(i).getName() + "\n    ₡ " + Inventory.current.getCreditsText(prices.get(i)));
             }
          }
          else
          {
-            Main.userInterface.println("Sold!\n    ₡ 0.00");
+            GUI.println("Sold!\n    ₡ 0.00");
          }
       }
    }
-
-   
 }

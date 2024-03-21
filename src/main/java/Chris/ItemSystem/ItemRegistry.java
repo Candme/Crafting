@@ -2,6 +2,7 @@ package Chris.ItemSystem;
 
 import java.util.ArrayList;
 
+import Chris.*;
 import Chris.ItemSystem.ItemTypes.*;
 import Chris.ItemSystem.GatheringAreas.*;
 
@@ -229,7 +230,7 @@ public class ItemRegistry implements java.io.Serializable {
 
     public void printItems() {
         for (Item i : itemList) {
-            System.out.println(i.getName());
+            GUI.println(i.getName());
         }
     }
 
