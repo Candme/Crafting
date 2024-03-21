@@ -1,11 +1,11 @@
-package ItemSystem.GatheringAreas;
+package Chris.ItemSystem.GatheringAreas;
 
 import java.util.ArrayList;
 
-import ItemSystem.*;
+import Chris.ItemSystem.*;
 
-import ItemSystem.ItemTypes.*;
-import ItemSystem.GatheringAreas.Farms.*;
+import Chris.ItemSystem.ItemTypes.*;
+import Chris.ItemSystem.GatheringAreas.Farms.*;
 
 public class Farm implements java.io.Serializable 
 {

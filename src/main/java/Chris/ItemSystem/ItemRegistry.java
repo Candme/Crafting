@@ -1,9 +1,9 @@
-package ItemSystem;
+package Chris.ItemSystem;
 
 import java.util.ArrayList;
 
-import ItemSystem.ItemTypes.*;
-import ItemSystem.GatheringAreas.*;
+import Chris.ItemSystem.ItemTypes.*;
+import Chris.ItemSystem.GatheringAreas.*;
 
 public class ItemRegistry implements java.io.Serializable {
     public ArrayList<Item> itemList;

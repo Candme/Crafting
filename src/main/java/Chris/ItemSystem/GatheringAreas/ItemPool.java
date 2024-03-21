@@ -1,10 +1,10 @@
-package ItemSystem.GatheringAreas;
+package Chris.ItemSystem.GatheringAreas;
 
 import java.util.ArrayList;
 
-import ItemSystem.*;
+import Chris.ItemSystem.*;
 
-import ItemSystem.ItemTypes.*;
+import Chris.ItemSystem.ItemTypes.*;
 
 public class ItemPool implements java.io.Serializable 
 {

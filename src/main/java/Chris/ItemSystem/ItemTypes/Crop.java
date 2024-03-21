@@ -1,6 +1,6 @@
-package ItemSystem.ItemTypes;
+package Chris.ItemSystem.ItemTypes;
 
-import ItemSystem.*;
+import Chris.ItemSystem.*;
 
 
 public class Crop extends Item

@@ -1,3 +1,5 @@
+package Chris;
+
 import java.util.*;
 import java.util.function.*;
 
@@ -8,13 +10,11 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import Color.*;
+import Chris.ItemSystem.*;
+import Chris.ItemSystem.ItemRegistry;
 
-import ItemSystem.*;
-import ItemSystem.ItemRegistry;
-
-import ItemSystem.ItemTypes.*;
-import ItemSystem.GatheringAreas.*;
+import Chris.ItemSystem.ItemTypes.*;
+import Chris.ItemSystem.GatheringAreas.*;
 
 import java.time.*;
 
@@ -30,7 +30,7 @@ public class Main {
     static ItemPool forest;
     static ItemPool mine;
 
-    static GUI userInterface;
+    public static GUI userInterface;
 
     static Consumer<String> inputQueue = null;
 
@@ -50,10 +50,8 @@ public class Main {
         userInterface = new GUI();
         
         while (true) {
-            userInterface.print(C.GREEN_BRIGHT);
             String consoleInput = input.nextLine();
             consoleInput = consoleInput.toLowerCase();
-            userInterface.print(C.RESET);
             processInput(consoleInput);
        }
     }
@@ -177,24 +175,21 @@ public class Main {
     }
 
     public static void suggestHandle(String textToAdd) {
-    try {
-        Files.write(Paths.get("src/main/java/SaveData/suggestions.md"), (textToAdd + "\n").getBytes(), StandardOpenOption.APPEND);
-        userInterface.println("Suggestion taken!");
-    } catch (IOException e) {
-        userInterface.println("An error occurred:");
-        e.printStackTrace();
-        userInterface.println(C.RESET);
+        try {
+                Files.write(Paths.get("src/main/java/SaveData/suggestions.md"), (textToAdd + "\n").getBytes(), StandardOpenOption.APPEND);
+            userInterface.println("Suggestion taken!");
+        } catch (IOException e) {
+            userInterface.println("An error occurred:");
+            e.printStackTrace();
+        }
     }
-}
     
     public static void craft(String itemToCraft) {
         String toCraft;
         if (itemToCraft == "")
         {
-            userInterface.println(C.CYAN_BRIGHT + "Enter the name of the item you would like to craft.");
-            userInterface.print(C.GREEN_BRIGHT);
+            userInterface.println("Enter the name of the item you would like to craft.");
             toCraft = input.nextLine();
-            userInterface.print(C.RESET);
         }
         else
         {
@@ -204,10 +199,8 @@ public class Main {
         if (reg.findItem(toCraft) != null) {
             int recipeIndex;
             if (reg.findItem(toCraft).getRecipes().size() > 1) {
-                userInterface.println(C.CYAN_BRIGHT + "Enter the number of the recipe you would like to use (use recipes command to view recipes)");
-                userInterface.print(C.GREEN_BRIGHT);
+                userInterface.println("Enter the number of the recipe you would like to use (use recipes command to view recipes)");
                 String recipeIndexString = input.nextLine();
-                userInterface.print(C.RESET);
                 try {
                     recipeIndex = Integer.parseInt(recipeIndexString);
                 } catch (NumberFormatException e) {
@@ -221,10 +214,8 @@ public class Main {
                 recipeIndex = 0;
             }
 
-            userInterface.println(C.CYAN_BRIGHT + "Enter the amount of times you would like to craft (or -1 to cancel)");
-            userInterface.print(C.GREEN_BRIGHT);
+            userInterface.println("Enter the amount of times you would like to craft (or -1 to cancel)");
             String recipeAmountString = input.nextLine();
-            userInterface.print(C.RESET);
             int amount;
             try {
                 amount = Integer.parseInt(recipeAmountString);
@@ -268,10 +259,8 @@ public class Main {
         String toFind;
         if (itemToRecipe == "")
         {
-            userInterface.println(C.CYAN_BRIGHT + "Enter the name of the item you would like to view the recipes of");
-            userInterface.print(C.GREEN_BRIGHT);
+            userInterface.println("Enter the name of the item you would like to view the recipes of");
             toFind = input.nextLine();
-            userInterface.print(C.RESET);
         }
         else
         {
@@ -450,6 +439,7 @@ public class Main {
                         }
                         case "shop":
                         case "store": {
+                            userInterface.clear();
                             if (lastShop == null)
                             {
                                 lastShop = Instant.now();
@@ -482,13 +472,9 @@ public class Main {
                                     userInterface.println("Shop will reset in " + (diff / 60) + ":" + (diff % 60));
                                 }
                             }
-
                             currentShop.printShop();
-                            userInterface.println(C.CYAN_BRIGHT + "What would you like to buy?");
-                            userInterface.print(C.GREEN_BRIGHT);
-                            String toBuy = input.nextLine();
-                            userInterface.print(C.RESET);
-                            currentShop.buy(toBuy);
+                            userInterface.println("What would you like to buy?");
+                            inputQueue = currentShop::buy;
                             break;
                         }
         // Unknown

@@ -1,7 +1,8 @@
-package ItemSystem.GatheringAreas;
+package Chris.ItemSystem.GatheringAreas;
 
 import java.util.*;
-import ItemSystem.*;
+import Chris.ItemSystem.*;
+import Chris.*;
 
 public class Shop implements java.io.Serializable
 {
@@ -42,13 +43,13 @@ public class Shop implements java.io.Serializable
 
                   if (amounts.get(index) > 1)
                   {
-                     System.out.println("Bought " + amounts.get(index) + " " + items.get(index).getName() + "s");
+                     Main.userInterface.println("Bought " + amounts.get(index) + " " + items.get(index).getName() + "s");
                   }
                   else
                   {
-                     System.out.println("Bought a " + items.get(index).getName());
+                     Main.userInterface.println("Bought a " + items.get(index).getName());
                   }
-                  System.out.println("You have " + Inventory.current.getCreditsText() + " credits remaining");
+                  Main.userInterface.println("You have " + Inventory.current.getCreditsText() + " credits remaining");
 
                   items.set(index, null);
                   amounts.set(index, -1);
@@ -66,39 +67,39 @@ public class Shop implements java.io.Serializable
          {
             if (itemFlag)
             {
-               System.out.println("You do not have enough money");
+               Main.userInterface.println("You do not have enough money");
             }
          }
          else
          {
-            System.out.println("Item not in stock"); 
+            Main.userInterface.println("Item not in stock"); 
          }
       }
       else
       {
-         System.out.println("Item does not exist");
+         Main.userInterface.println("Item does not exist");
       }
    }
 
    public void printShop()
    {
-      System.out.println("Shop:");
+      Main.userInterface.println("Shop:");
       for (int i = 0; i < items.size(); i++)
       {
          if (items.get(i) != null)
          {
             if (amounts.get(i) > 1)
             {
-               System.out.println(amounts.get(i) + "x " + items.get(i).getName() + "s\n    ₡ " + Inventory.current.getCreditsText(prices.get(i)));
+               Main.userInterface.println(amounts.get(i) + "x " + items.get(i).getName() + "s\n    ₡ " + Inventory.current.getCreditsText(prices.get(i)));
             }
             else
             {
-               System.out.println("1x " + items.get(i).getName() + "\n    ₡ " + Inventory.current.getCreditsText(prices.get(i)));
+               Main.userInterface.println("1x " + items.get(i).getName() + "\n    ₡ " + Inventory.current.getCreditsText(prices.get(i)));
             }
          }
          else
          {
-            System.out.println("Sold!\n    ₡ 0.00");
+            Main.userInterface.println("Sold!\n    ₡ 0.00");
          }
       }
    }

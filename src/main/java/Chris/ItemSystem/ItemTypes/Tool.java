@@ -1,8 +1,10 @@
-package ItemSystem.ItemTypes;
+package Chris.ItemSystem.ItemTypes;
 
-import ItemSystem.*;
+import Chris.ItemSystem.*;
+import Chris.ItemSystem.Item;
 
-public class Tool extends Item {
+public class Tool extends Item
+{
     int maxDurability;
     int durability;
     ToolType toolType;

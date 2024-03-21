@@ -1,10 +1,8 @@
-package ItemSystem;
+package Chris.ItemSystem;
 
 import java.util.ArrayList;
 
-import Color.*;
-
-import ItemSystem.ItemTypes.*;
+import Chris.ItemSystem.ItemTypes.*;
 
 public class Inventory implements java.io.Serializable {
     public static Inventory current = null;
@@ -211,7 +209,7 @@ public class Inventory implements java.io.Serializable {
 
     public void printInventoryList() {
         if (items.size() > 0) {
-            System.out.println(C.BLUE_BOLD + "\nInventory contents:" + C.RESET);
+            System.out.println("\nInventory contents:");
             for (int i = 0; i < items.size(); i++) {
                 System.out.println(itemAmounts.get(i) + "x " + items.get(i).getName());
             }

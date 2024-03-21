@@ -1,3 +1,5 @@
+package Chris;
+
 import java.util.*;
 
 import java.io.*;
@@ -8,13 +10,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import Color.*;
+import Chris.ItemSystem.*;
+import Chris.ItemSystem.ItemRegistry;
 
-import ItemSystem.*;
-import ItemSystem.ItemRegistry;
-
-import ItemSystem.ItemTypes.*;
-import ItemSystem.GatheringAreas.*;
+import Chris.ItemSystem.ItemTypes.*;
+import Chris.ItemSystem.GatheringAreas.*;
 
 public class GUI
 {
@@ -42,7 +42,7 @@ public class GUI
         //text input & button on bottom, text output above.
         mainOutput = new JTextArea("Type '?' or 'help' for help.\nThis program does not automatically save.\n");
         mainOutput.setEditable(false);
-        mainOutput.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(0), "Log"));
+        mainOutput.setBorder( BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(0), "Log"));
         mainOutput.setBackground(bgColor);
         JPanel mainInput = new JPanel();
         mainInput.setLayout(new BorderLayout());
