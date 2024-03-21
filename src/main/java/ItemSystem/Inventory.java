@@ -212,7 +212,6 @@ public class Inventory implements java.io.Serializable {
     public void printInventoryList() {
         if (items.size() > 0) {
             System.out.println(C.BLUE_BOLD + "\nInventory contents:" + C.RESET);
-            System.out.println("₡ " + getCreditsText());
             for (int i = 0; i < items.size(); i++) {
                 System.out.println(itemAmounts.get(i) + "x " + items.get(i).getName());
             }
@@ -269,5 +268,18 @@ public class Inventory implements java.io.Serializable {
 
     public static void importSave(Inventory inventory) {
         current = inventory;
+    }
+
+    public String toString()
+    {
+        if (items.size() > 0) {
+            String returnSt = "";
+            for (int i = 0; i < items.size(); i++) {
+                returnSt += (itemAmounts.get(i) + "x " + items.get(i).getName() + "\n");
+            }
+            return returnSt;
+        } else {
+            return "Inventory empty.";
+        }
     }
 }
