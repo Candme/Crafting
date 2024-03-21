@@ -220,8 +220,15 @@ public class ItemRegistry implements java.io.Serializable {
     // Returns an item by name, if not found returns a null object
     public Item findItem(String itemName) {
         for (Item i : itemList) {
-            if (i.getName().toLowerCase().equals(itemName.toLowerCase())
-                    || i.getName().toLowerCase().equals(itemName.toLowerCase() + "s")) {
+            if (i.getName().toLowerCase().equals(itemName.toLowerCase())) {
+                return i;
+            }
+            if (i.getName().toLowerCase().equals(itemName.toLowerCase() + "s"))
+            {
+                return i;
+            }
+            if ((i.getName().toLowerCase() + "s").equals(itemName.toLowerCase()))
+            {
                 return i;
             }
         }

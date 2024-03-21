@@ -24,6 +24,8 @@ public class GUI
     JTextArea statsInventory;
     JTextField mainInputText;
     JTextArea mainOutput;
+    JProgressBar statsHealthBar;
+    JTextArea statsHealthText;
     
     public GUI()
     {
@@ -42,10 +44,9 @@ public class GUI
         JPanel main = new JPanel();
         main.setLayout(new BorderLayout());
         main.setBackground(bgColor);
-        //text input & button on bottom, text output above.
         mainOutput = new JTextArea("Type '?' or 'help' for help.\nThis program does not automatically save.\n");
         mainOutput.setEditable(false);
-        mainOutput.setBorder( BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(0), "Log"));
+        mainOutput.setBorder(BorderFactory.createEmptyBorder());
         mainOutput.setBackground(bgColor);
         JPanel mainInput = new JPanel();
         mainInput.setLayout(new BorderLayout());
@@ -68,14 +69,15 @@ public class GUI
         mainInput.add(mainInputText, BorderLayout.CENTER);
         mainInput.add(mainInputButton, BorderLayout.EAST);
         mainInput.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
-        main.add(mainOutput, BorderLayout.CENTER);
+        JScrollPane scrollArea = new JScrollPane(mainOutput);
+        scrollArea.setBorder( BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(0), "Log"));
+        main.add(scrollArea, BorderLayout.CENTER);
         main.add(mainInput, BorderLayout.SOUTH);
         main.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         JPanel stats = new JPanel();
         stats.setLayout(new BorderLayout());
         stats.setBackground(bgColor);
-        //exp, health (find out how to do bars), credits, inv
         JPanel statsTop = new JPanel();
         statsTop.setBackground(bgColor);
         statsTop.setLayout(new BoxLayout(statsTop, BoxLayout.Y_AXIS));
@@ -83,10 +85,11 @@ public class GUI
         statsExperience.setLayout(new BoxLayout(statsExperience, BoxLayout.Y_AXIS));
         statsExperience.setBackground(bgColor);
         JProgressBar statsExperienceBar = new JProgressBar(0, 50);
-        statsExperienceBar.setValue(17);
+        statsExperienceBar.setValue(0);
         JTextArea statsExperienceText = new JTextArea("1");
         statsExperienceBar.setForeground(new Color(0, 200, 0));
         statsExperienceBar.setBackground(bgColor);
+            statsExperienceBar.setBorder(BorderFactory.createBevelBorder(0));
         statsExperienceText.setBackground(bgColor);
         statsExperienceText.setEditable(false);
         statsExperience.add(statsExperienceBar);
@@ -95,16 +98,17 @@ public class GUI
         JPanel statsHealth = new JPanel();
         statsHealth.setBackground(bgColor);
         statsHealth.setLayout(new BoxLayout(statsHealth, BoxLayout.Y_AXIS));
-        JProgressBar statsHealthBar = new JProgressBar(0, 3);
-        statsHealthBar.setValue(2);
+        statsHealthBar = new JProgressBar(0, 3);
+        statsHealthBar.setValue(3);
         statsHealthBar.setForeground(new Color(200, 0, 0));
-        JTextArea statsHealthText = new JTextArea("2/3");
+        statsHealthText = new JTextArea("2/3");
         statsHealthBar.setBackground(bgColor);
+        statsHealthBar.setBorder(BorderFactory.createBevelBorder(0));
         statsHealthText.setBackground(bgColor);
         statsHealthText.setEditable(false);
         statsHealth.add(statsHealthBar);
         statsHealth.add(statsHealthText);
-        statsHealth.setBorder( BorderFactory.createTitledBorder(BorderFactory.createBevelBorder(1), "Health NYI"));
+        statsHealth.setBorder( BorderFactory.createTitledBorder(BorderFactory.createBevelBorder(1), "Health"));
         JPanel statsCredits = new JPanel();
         statsCredits.setBackground(bgColor);
         statsCredits.setLayout(new BoxLayout(statsCredits, BoxLayout.Y_AXIS));
@@ -137,13 +141,16 @@ public class GUI
     {
         currentGUI.statsInventory.setText(Inventory.current.toString());
         currentGUI.statsCreditsText.setText("₡ " + Inventory.current.getCreditsText());
+        currentGUI.statsHealthText.setText(Inventory.current.health + "/" + Inventory.current.maxHealth);
+        currentGUI.statsHealthBar.setMaximum(Inventory.current.maxHealth);
+        currentGUI.statsHealthBar.setValue(Inventory.current.health);
     }
 
     public static void takeInput()
     {
         String input = currentGUI.mainInputText.getText();
         currentGUI.mainInputText.setText("");
-        Main.processInput(input);
+        Runner.processInput(input);
         update();
     }
 

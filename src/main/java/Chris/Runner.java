@@ -18,8 +18,6 @@ import Chris.ItemSystem.GatheringAreas.*;
 
 import java.time.*;
 
-
-
 public class Runner {
     public static Scanner input;
     public static ItemRegistry reg;
@@ -40,15 +38,13 @@ public class Runner {
         new Inventory();
         reg = Inventory.current.getItemRegistry();
 
-        Inventory.current.addItem(reg.findItem("Plank"), 3);
         Inventory.current.addItem(reg.findItem("Stick"), 2);
-        
+        Inventory.current.addItem(reg.findItem("Plank"), 3);
 
         mine = (ItemPool) reg.gatheringAreas.get(0);
         forest = (ItemPool) reg.gatheringAreas.get(1);
 
         userInterface = new GUI();
-        GUI.println("Tets");
         
         while (true) {
             String consoleInput = input.nextLine();
@@ -65,7 +61,6 @@ public class Runner {
     }
 
     public static void printHelpPage(HelpPages page) {
-        GUI.clear();
         switch (page) {
             case ALL:
                 printHelpPage(HelpPages.DEFAULT);
@@ -186,47 +181,16 @@ public class Runner {
     }
     
     public static void craft(String itemToCraft) {
-        String toCraft;
-        if (itemToCraft == "")
-        {
-            GUI.println("Enter the name of the item you would like to craft.");
-            toCraft = input.nextLine();
-        }
-        else
-        {
-            toCraft = itemToCraft;
-        }
+        String toCraft = itemToCraft;
         
         if (reg.findItem(toCraft) != null) {
             int recipeIndex;
-            if (reg.findItem(toCraft).getRecipes().size() > 1) {
-                GUI.println("Enter the number of the recipe you would like to use (use recipes command to view recipes)");
-                String recipeIndexString = input.nextLine();
-                try {
-                    recipeIndex = Integer.parseInt(recipeIndexString);
-                } catch (NumberFormatException e) {
-                    recipeIndex = 0;
-                }
-
-                if (reg.findItem(toCraft).getRecipes().size() < recipeIndex + 1) {
-                    recipeIndex = 0;
-                }
-            } else {
-                recipeIndex = 0;
-            }
-
-            GUI.println("Enter the amount of times you would like to craft (or -1 to cancel)");
-            String recipeAmountString = input.nextLine();
-            int amount;
-            try {
-                amount = Integer.parseInt(recipeAmountString);
-            } catch (NumberFormatException e) {
-                amount = 1;
-            }
+            
+            int amount = 1;
 
             Item item = reg.findItem(toCraft);
 
-            Recipe r = item.getRecipes().get(recipeIndex);
+            Recipe r = item.getRecipes().get(0);
 
             if (r.hasItems(amount))
             {
@@ -299,7 +263,8 @@ public class Runner {
         }
         else
         {
-        if(consoleInput.length() >= 5 && consoleInput.substring(0,5).equals("craft"))
+        GUI.clear();
+            if(consoleInput.length() >= 5 && consoleInput.substring(0,5).equals("craft"))
             {
                 if (consoleInput.length() >= 6)
                 {
