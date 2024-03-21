@@ -32,7 +32,7 @@ public class GUI
         currentGUI = this;
         Border buttonBorder = BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0), BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
-        JFrame window = new JFrame("The thing");
+        JFrame window = new JFrame("Version 0.1.0G");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLayout(new BorderLayout());
         window.setSize(500, 360);

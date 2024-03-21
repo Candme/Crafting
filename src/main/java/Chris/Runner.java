@@ -113,11 +113,8 @@ public class Runner {
                 GUI.println("show recipes (item) / recipes (item):");
                 GUI.println("    Shows the recipes of the item whose name was given in order of priority when a recipe is not specified");
                 GUI.println();
-                GUI.println("craft:");
-                GUI.println("    Prompts you to input an item's name, then attempts to craft the item with a given recipe");
-                GUI.println();
                 GUI.println("craft (item):");
-                GUI.println("    Attempts to craft the item whose name was given");
+                GUI.println("    Attempts to craft the item with the given name");
                 break;
 
             case MINING:

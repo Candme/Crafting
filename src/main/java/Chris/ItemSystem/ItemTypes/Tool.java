@@ -1,5 +1,6 @@
 package Chris.ItemSystem.ItemTypes;
 
+import Chris.*;
 import Chris.ItemSystem.*;
 import Chris.ItemSystem.Item;
 
@@ -30,7 +31,7 @@ public class Tool extends Item
         }
         if (durability <= 0) {
             durability = maxDurability;
-            System.out.println("A " + super.getName() + " broke!");
+            GUI.println("A " + super.getName() + " broke!");
             Inventory.current.removeItem(this);
         }
     }
