@@ -1,6 +1,7 @@
 package Chris.ItemSystem;
 
 import java.util.ArrayList;
+import Chris.*;
 
 public class Item implements java.io.Serializable
 {
@@ -39,13 +40,13 @@ public class Item implements java.io.Serializable
     {
         for (int i = 0; i < recipes.size(); i++)
         {
-            System.out.println("Recipe " + i + ":");
-            System.out.print("  ");
-            System.out.println(recipes.get(i));
+            GUI.println("Recipe " + i + ":");
+            GUI.print("  ");
+            GUI.println(recipes.get(i).toString());
         }
         if (recipes.size() <= 0)
         {
-            System.out.println("No recipes exist for this item.");
+            GUI.println("No recipes exist for this item.");
         }
     }
 

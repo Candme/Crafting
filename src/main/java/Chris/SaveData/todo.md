@@ -9,4 +9,5 @@ Add item details (for user display)
 Battle
    -Enemies
    -Fighting
-   -Health
+   ~~-Health~~
+   ~~-Experience & Levels~~

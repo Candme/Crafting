@@ -13,8 +13,14 @@ public class Inventory implements java.io.Serializable {
     ArrayList<Integer> itemAmounts;
     public ItemRegistry registry;
 
+    public Weapon equipped;
+
     public int health;
     public int maxHealth;
+
+    public int experience;
+    public int maxExperience;
+    public int level;
 
     public Inventory() {
         money = 5;
@@ -27,6 +33,10 @@ public class Inventory implements java.io.Serializable {
 
         health = 3;
         maxHealth = 3;
+
+        experience = 0;
+        maxExperience = 50;
+        level = 1;
     }
 
     // Returns item if in inventory
@@ -280,5 +290,43 @@ public class Inventory implements java.io.Serializable {
         } else {
             return "Inventory empty.";
         }
+    }
+
+    public void addExperience(int amount)
+    {
+        experience += amount;
+        if (experience >= maxExperience)
+        {
+            experience -= maxExperience;
+            level ++;
+            maxExperience *= 1.5;
+            int toAdd = level * 2;
+            //To make health 72 instead of 73
+            if (level == 8)
+            {
+                toAdd --;
+            }
+            maxHealth += toAdd;
+            health += toAdd;
+            addItem(registry.findItem("Wallet"), level * 2);
+            while (hasItem(registry.findItem("Wallet")))
+            {
+                ((Wallet)Inventory.current.getItem("Wallet")).use(false);  
+            }
+        }
+    }
+
+    public void die()
+    {
+        addCredits(getCredits() / 2.25);
+        experience = 0;
+        for (int i = 0; i < items.size(); i ++)
+        {
+            if (Math.random() > 0.6)
+            {
+                removeItem(items.get(i), (int)(Math.random() * itemAmounts.get(i) + 1));
+            }
+        }
+        health = maxHealth/2 + 1;
     }
 }

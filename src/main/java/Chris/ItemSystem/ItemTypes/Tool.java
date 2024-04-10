@@ -31,8 +31,15 @@ public class Tool extends Item
         }
         if (durability <= 0) {
             durability = maxDurability;
-            GUI.println("A " + super.getName() + " broke!");
+            if (toolType != ToolType.CONSUMABLE)
+            {
+                GUI.println("A " + super.getName() + " broke!");
+            }
             Inventory.current.removeItem(this);
+            if (Inventory.current.equipped == this)
+            {
+                Inventory.current.equipped = null;
+            }
         }
     }
 
@@ -50,6 +57,8 @@ public class Tool extends Item
         GENERIC,
         CRAFTING,
         PICKAXE,
-        AXE
+        AXE,
+        WEAPON,
+        CONSUMABLE
     }
 }

@@ -79,6 +79,7 @@ public class Shop implements java.io.Serializable
       {
          GUI.println("Item does not exist");
       }
+       Runner.inputQueue = null;
    }
 
    public void printShop()

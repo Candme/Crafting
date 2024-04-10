@@ -16,6 +16,8 @@ import Chris.ItemSystem.ItemRegistry;
 import Chris.ItemSystem.ItemTypes.*;
 import Chris.ItemSystem.GatheringAreas.*;
 
+import Chris.ItemSystem.EnemySystem.*;
+
 import java.time.*;
 
 public class Runner {
@@ -30,16 +32,13 @@ public class Runner {
 
     public static GUI userInterface;
 
-    static Consumer<String> inputQueue = null;
+    public static Consumer<String> inputQueue = null;
 
     public Runner() {
         input = new Scanner(System.in);
 
         new Inventory();
         reg = Inventory.current.getItemRegistry();
-
-        Inventory.current.addItem(reg.findItem("Stick"), 2);
-        Inventory.current.addItem(reg.findItem("Plank"), 3);
 
         mine = (ItemPool) reg.gatheringAreas.get(0);
         forest = (ItemPool) reg.gatheringAreas.get(1);
@@ -50,7 +49,7 @@ public class Runner {
             String consoleInput = input.nextLine();
             consoleInput = consoleInput.toLowerCase();
             processInput(consoleInput);
-       }
+        }
     }
 
     public enum HelpPages {
@@ -135,7 +134,7 @@ public class Runner {
     }
     
     public static void saveHandle(String saveName) {
-        String filename = "src/main/java/SaveData/" + saveName + ".srl";
+        String filename = "src/main/java/Chris/SaveData/" + saveName + ".srl";
 
         try {
             FileOutputStream fos = new FileOutputStream(filename);
@@ -146,10 +145,11 @@ public class Runner {
         } catch (IOException ex) {
             GUI.println("ERROR SAVING:\n" + ex);
         }
+        inputQueue = null;
     }
 
     public static void loadHandle(String saveName) {
-        String filename = "src/main/java/SaveData/" + saveName + ".srl";
+        String filename = "src/main/java/Chris/SaveData/" + saveName + ".srl";
 
         try {
             FileInputStream fin = new FileInputStream(filename);
@@ -159,27 +159,26 @@ public class Runner {
             Inventory.current = invL;
             reg = Inventory.current.getItemRegistry();
             GUI.println("Succesfully loaded file under name '" + saveName + "'");
-            Inventory.current.printInventoryList();
         } catch (IOException ex) {
             GUI.println("ERROR LOADING SAVE:\n" + ex);
         } catch (ClassNotFoundException ex) {
             GUI.println("PROGRAM MISSING FILES:\n" + ex);
         }
+        inputQueue = null;
     }
 
     public static void suggestHandle(String textToAdd) {
         try {
-                Files.write(Paths.get("src/main/java/SaveData/suggestions.md"), (textToAdd + "\n").getBytes(), StandardOpenOption.APPEND);
+                Files.write(Paths.get("src/main/java/Chris/SaveData/suggestions.md"), (textToAdd + "\n").getBytes(), StandardOpenOption.APPEND);
             GUI.println("Suggestion taken!");
         } catch (IOException e) {
             GUI.println("An error occurred:");
             e.printStackTrace();
         }
+        inputQueue = null;
     }
     
-    public static void craft(String itemToCraft) {
-        String toCraft = itemToCraft;
-        
+    public static void craft(String toCraft) {        
         if (reg.findItem(toCraft) != null) {
             int recipeIndex;
             
@@ -192,6 +191,7 @@ public class Runner {
             if (r.hasItems(amount))
             {
                 Inventory.current.craft(r);
+                Inventory.current.addExperience(1);
                 if (amount > 1 || r.yield > 1)
                 {
                     GUI.println("Crafted " + (amount * r.yield) + " " + reg.findItem(toCraft).getName() + "s");
@@ -217,19 +217,7 @@ public class Runner {
         }
     }
 
-    public static void recipes(String itemToRecipe) {
-        String toFind;
-        if (itemToRecipe == "")
-        {
-            GUI.println("Enter the name of the item you would like to view the recipes of");
-            toFind = input.nextLine();
-        }
-        else
-        {
-            toFind = itemToRecipe;
-        }
-        
-        
+    public static void recipes(String toFind) {        
         Item search = reg.findItem(toFind);
         if (search != null) {
             GUI.println();
@@ -256,7 +244,6 @@ public class Runner {
         if (inputQueue != null)
         {
             inputQueue.accept(consoleInput);
-            inputQueue = null;
         }
         else
         {
@@ -299,6 +286,7 @@ public class Runner {
             }
             else
             {
+                consoleInput = consoleInput.toLowerCase();
                 switch (consoleInput) {
                     // Help & Settings
                     case "save": {
@@ -364,9 +352,17 @@ public class Runner {
                         case "mine": {
                             Tool pick = Inventory.current.findToolOfType(Tool.ToolType.PICKAXE);
                             if (pick != null) {
-                                Item mined = mine.getItem();
-                                Inventory.current.addItem(mined);
-                                GUI.println("Mined a " + mined.getName() + ".");
+                                if (Math.random() > 0.995)
+                                    {
+                                        new Fight(new Enemy("Cave Monster", 20, 3));
+                                    }
+                                    else
+                                    {
+                                        Item mined = mine.getItem();
+                                        Inventory.current.addItem(mined);
+                                        GUI.println("Mined a " + mined.getName() + ".");
+                                        Inventory.current.addExperience(1);
+                                    }
                                 pick.use();
                             } else {
                                 GUI.println("No pickaxe in inventory.");
@@ -377,17 +373,24 @@ public class Runner {
                         case "lumber": {
                             Tool axe = Inventory.current.findToolOfType(Tool.ToolType.AXE);
                             if (axe != null) {
-                                int ra = (int)(Math.random() * 5 + 2);
-                                Inventory.current.addItem(reg.findItem("Log"), ra);
-                                if (ra > 1)
+                                if (Math.random() > 0.995)
                                 {
-                                    GUI.println("Chopped " + ra + " logs.");
+                                    new Fight(new Enemy("Ent", 10, 2));
                                 }
                                 else
                                 {
-                                    GUI.println("Chopped a log.");
+                                    int ra = (int)(Math.random() * 4 + 1);
+                                    Inventory.current.addItem(reg.findItem("Log"), ra);
+                                    Inventory.current.addExperience(1);
+                                    if (ra > 1)
+                                    {
+                                        GUI.println("Chopped " + ra + " logs.");
+                                    }
+                                    else
+                                    {
+                                        GUI.println("Chopped a log.");
+                                    }
                                 }
-
                                 axe.use();
                             } else {
                                 GUI.println("No axe in inventory.");
@@ -395,9 +398,17 @@ public class Runner {
                             break;
                         }
                         case "forage": {
-                            Item gotten = forest.getItem();
-                            Inventory.current.addItem(gotten);
-                            GUI.println("Found a " + gotten.getName() + ".");
+                            if (Math.random() > 0.965)
+                            {
+                                new Fight(new Enemy("Goblin", 5, 1));
+                            }
+                            else
+                            {
+                                Item gotten = forest.getItem();
+                                Inventory.current.addItem(gotten);
+                                GUI.println("Found a " + gotten.getName() + ".");
+                                Inventory.current.addExperience(1);
+                            }
                             break;
                         }
                         case "shop":

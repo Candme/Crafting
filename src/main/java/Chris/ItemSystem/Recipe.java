@@ -1,5 +1,6 @@
 package Chris.ItemSystem;
 
+import Chris.*;
 import Chris.ItemSystem.ItemTypes.*;
 
 import java.util.ArrayList;
