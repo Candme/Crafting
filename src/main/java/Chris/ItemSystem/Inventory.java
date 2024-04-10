@@ -318,7 +318,7 @@ public class Inventory implements java.io.Serializable {
 
     public void die()
     {
-        addCredits(getCredits() / 2.25);
+        addCredits(-1 * (getCredits() / 2.25));
         experience = 0;
         for (int i = 0; i < items.size(); i ++)
         {
