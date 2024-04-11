@@ -175,6 +175,8 @@ public class GUI
         stats.add(scrollArea2, BorderLayout.CENTER);
         stats.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
 
+        stats.setMinimumSize(new Dimension(1000, 1));
+        
         window.add(main, BorderLayout.CENTER);
         window.add(stats, BorderLayout.WEST);
 

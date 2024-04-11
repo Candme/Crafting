@@ -83,8 +83,19 @@ public class Fight
             }
             catch (Exception e)
             {
-                GUI.println(itemString + " is not a healing item.");
-                Runner.inputQueue = this::takeTurn;
+                try
+                {
+                    Weapon w = (Weapon)item;
+                    w.use();
+                    GUI.println("Equipped a " + itemString + ".");
+                    Runner.inputQueue = this::takeTurn;
+                    resolve();
+                }
+                catch (Exception e2)
+                {
+                    GUI.println(itemString + " is not a valid item.");
+                    Runner.inputQueue = this::takeTurn;
+                }
             }
         }
     }

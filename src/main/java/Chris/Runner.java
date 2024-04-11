@@ -43,6 +43,8 @@ public class Runner {
         mine = (ItemPool) reg.gatheringAreas.get(0);
         forest = (ItemPool) reg.gatheringAreas.get(1);
 
+        Inventory.current.addItem(reg.findItem("Stone Sword"));
+
         userInterface = new GUI();
         
         while (true) {

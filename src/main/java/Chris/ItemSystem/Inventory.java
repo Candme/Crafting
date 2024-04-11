@@ -297,6 +297,7 @@ public class Inventory implements java.io.Serializable {
         experience += amount;
         if (experience >= maxExperience)
         {
+            GUI.println("LEVEL UP!");
             experience -= maxExperience;
             level ++;
             maxExperience *= 1.5;

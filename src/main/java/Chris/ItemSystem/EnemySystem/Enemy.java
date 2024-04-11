@@ -22,7 +22,8 @@ public class Enemy {
             GUI.println(name + " has been slain!");
             int weight = (int)(2 * (health * 0.2) + (damage * 0.25) + 1);
             Inventory.current.addExperience(weight);
-            Inventory.current.addItem(Inventory.current.registry.findItem("Wallet"), weight);
+            GUI.println("Got " + weight + " XP!");
+Inventory.current.addItem(Inventory.current.registry.findItem("Wallet"), weight);
         }
     }
 
