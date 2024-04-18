@@ -108,7 +108,14 @@ public class Fight
         }
         else
         {
-            enemy.attack();
+            if (enemy.isHealer() && Math.random() > 0.93)
+            {
+                enemy.heal(enemy.maxHealth / 10);
+            }
+            else
+            {
+                enemy.attack();
+            }
             GUI.println();
             if (Inventory.current.health <= 0)
             {

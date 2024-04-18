@@ -20,7 +20,8 @@ import Chris.ItemSystem.EnemySystem.*;
 
 import java.time.*;
 
-public class Runner {
+public class Runner
+{
     public static Scanner input;
     public static ItemRegistry reg;
 
@@ -34,7 +35,10 @@ public class Runner {
 
     public static Consumer<String> inputQueue = null;
 
-    public Runner() {
+    static Item tempItem = null;
+
+    public Runner()
+    {
         input = new Scanner(System.in);
 
         new Inventory();
@@ -43,26 +47,28 @@ public class Runner {
         mine = (ItemPool) reg.gatheringAreas.get(0);
         forest = (ItemPool) reg.gatheringAreas.get(1);
 
-        Inventory.current.addItem(reg.findItem("Stone Sword"));
-
         userInterface = new GUI();
         
-        while (true) {
+        while (true)
+        {
             String consoleInput = input.nextLine();
             consoleInput = consoleInput.toLowerCase();
             processInput(consoleInput);
         }
     }
 
-    public enum HelpPages {
+    public enum HelpPages
+    {
         DEFAULT,
         ALL,
         INVENTORY,
         MINING
     }
 
-    public static void printHelpPage(HelpPages page) {
-        switch (page) {
+    public static void printHelpPage(HelpPages page)
+    {
+        switch (page)
+        {
             case ALL:
                 printHelpPage(HelpPages.DEFAULT);
                 GUI.println();
@@ -79,7 +85,7 @@ public class Runner {
                 GUI.println();
                 GUI.println("help (category) / (category)?:");
                 GUI.println("    Shows a list of all commands in a specific catergory including:");
-                GUI.println("    all, inventory / inv, mining");
+                GUI.println("    all, inventory / inv, gathering");
                 GUI.println();
                 GUI.println("suggest:");
                 GUI.println("    Allows you to suggest something for the program");
@@ -135,25 +141,31 @@ public class Runner {
         }
     }
     
-    public static void saveHandle(String saveName) {
+    public static void saveHandle(String saveName)
+    {
         String filename = "src/main/java/Chris/SaveData/" + saveName + ".srl";
 
-        try {
+        try
+        {
             FileOutputStream fos = new FileOutputStream(filename);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(Inventory.current);
             oos.close();
             GUI.println("Succesfully saved under name '" + saveName + "'");
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             GUI.println("ERROR SAVING:\n" + ex);
         }
         inputQueue = null;
     }
 
-    public static void loadHandle(String saveName) {
+    public static void loadHandle(String saveName)
+    {
         String filename = "src/main/java/Chris/SaveData/" + saveName + ".srl";
 
-        try {
+        try
+        {
             FileInputStream fin = new FileInputStream(filename);
             ObjectInputStream ois = new ObjectInputStream(fin);
             Inventory invL = (Inventory) ois.readObject();
@@ -161,39 +173,49 @@ public class Runner {
             Inventory.current = invL;
             reg = Inventory.current.getItemRegistry();
             GUI.println("Succesfully loaded file under name '" + saveName + "'");
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             GUI.println("ERROR LOADING SAVE:\n" + ex);
-        } catch (ClassNotFoundException ex) {
+        }
+        catch (ClassNotFoundException ex)
+        {
             GUI.println("PROGRAM MISSING FILES:\n" + ex);
         }
         inputQueue = null;
     }
 
-    public static void suggestHandle(String textToAdd) {
-        try {
+    public static void suggestHandle(String textToAdd)
+    {
+        try
+        {
                 Files.write(Paths.get("src/main/java/Chris/SaveData/suggestions.md"), (textToAdd + "\n").getBytes(), StandardOpenOption.APPEND);
             GUI.println("Suggestion taken!");
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             GUI.println("An error occurred:");
             e.printStackTrace();
         }
         inputQueue = null;
     }
     
-    public static void craft(String toCraft) {        
-        if (reg.findItem(toCraft) != null) {
-            int recipeIndex;
-            
-            int amount = 1;
-
+    public static void craft(String toCraft, int amount)
+    {        
+        if (reg.findItem(toCraft) != null)
+        {            
             Item item = reg.findItem(toCraft);
 
             Recipe r = item.getRecipes().get(0);
 
             if (r.hasItems(amount))
             {
-                Inventory.current.craft(r);
-                Inventory.current.addExperience(1);
+                for (int i = 0; i < amount; i++)
+                {
+                    Inventory.current.craft(r);
+                    Inventory.current.addExperience(1);
+                }
+                
                 if (amount > 1 || r.yield > 1)
                 {
                     GUI.println("Crafted " + (amount * r.yield) + " " + reg.findItem(toCraft).getName() + "s");
@@ -214,22 +236,91 @@ public class Runner {
                     GUI.println("You do not have enough materials to craft a " + reg.findItem(toCraft).getName());
                 }
             }
-        } else {
+        }
+        else
+        {
             GUI.println("Item does not exist.");
         }
     }
 
-    public static void recipes(String toFind) {        
+    public static void craftCheck(String inputText)
+    {
+        if (inputText.length() > 4 && inputText.substring(0,5).toLowerCase().equals("craft"))
+        {
+            if (inputText.length() < 7)
+            {
+                craft(tempItem.getName(), 1);
+                tempItem = null;
+                inputQueue = null;
+            }
+            else
+            {
+                try
+                {
+                    int number = Integer.parseInt(inputText.substring(6)); 
+                    craft(tempItem.getName(), number);
+                    tempItem = null;
+                    inputQueue = null;
+                }
+                catch (Exception e)
+                {
+                    craft(tempItem.getName(), 1);
+                    tempItem = null;
+                    inputQueue = null; 
+                }
+            }
+        }
+        else if (inputText.length() > 2 && inputText.substring(0,3).toLowerCase().equals("use"))
+        {
+            try 
+            {
+                HealingItem h = (HealingItem)tempItem;
+                h.use();
+                tempItem = null;
+                inputQueue = null;
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    Weapon w = (Weapon)tempItem;
+                    w.use();
+                    GUI.println("Equipped a " + tempItem.getName() + ".");
+                    tempItem = null;
+                    inputQueue = null;
+                }
+                catch (Exception e2)
+                {
+                    GUI.println(tempItem.getName() + " cannot be used.");
+                    tempItem = null;
+                    inputQueue = null;
+                }
+            }
+        }
+        else
+        {
+            tempItem = null;
+            inputQueue = null;
+            processInput(inputText);
+        }
+    }
+
+    public static void recipes(String toFind)
+    {        
         Item search = reg.findItem(toFind);
-        if (search != null) {
+        if (search != null)
+        {
             GUI.println();
             search.printRecipes();
-        } else {
+        }
+        else
+        {
             GUI.println("Item not found.");
         }
     }
     
-    public static void createShop() {
+    public static void createShop()
+    {
         currentShop = new Shop();
         int itemAmounts = (int)(Math.random() * 4 + 5);
         ItemPool pool = reg.getShopItems();
@@ -242,7 +333,8 @@ public class Runner {
         }
     }
 
-    public static void processInput(String consoleInput) {
+    public static void processInput(String consoleInput)
+    {
         if (inputQueue != null)
         {
             inputQueue.accept(consoleInput);
@@ -255,11 +347,11 @@ public class Runner {
                 if (consoleInput.length() >= 6)
                 {
                     String itemToCraft = consoleInput.substring(6);
-                    craft(itemToCraft);
+                    craft(itemToCraft, 1);
                 }
                 else
                 {
-                    craft("");
+                    craft("", 1);
                 }
             }
             else if(consoleInput.length() >= 12 && consoleInput.substring(0,12).equals("show recipes"))
@@ -289,180 +381,256 @@ public class Runner {
             else
             {
                 consoleInput = consoleInput.toLowerCase();
-                switch (consoleInput) {
+                switch (consoleInput)
+                {
                     // Help & Settings
-                    case "save": {
+                    case "save":
+                    {
                         GUI.println("Choose a name for your savefile:");
                         inputQueue = Runner::saveHandle;
                         break;
                     }
-                    case "load": {
+                    case "load":
+                    {
                         GUI.println("Enter the name of the savefile to load:");
                         inputQueue = Runner::loadHandle;  
                         break;
                     }
                     case "help all":
-                    case "all?": {
+                    case "all?":
+                    {
                         printHelpPage(HelpPages.ALL);
                         break;
                     }
                     case "help":
-                    case "?": {
+                    case "?":
+                    {
                         printHelpPage(HelpPages.DEFAULT);
                         break;
                     }
                     case "help inventory":
                     case "inventory?":
                     case "help inv":
-                    case "inv?": {
+                    case "inv?":
+                    {
                         printHelpPage(HelpPages.INVENTORY);
                         break;
                     }
                     case "help gathering":
-                    case "gathering?": {
+                    case "gathering?":
+                    {
                         printHelpPage(HelpPages.MINING);
                         break;
                     }
-                    case "suggest": {
+                    case "suggest":
+                    {
                         GUI.println("Type your suggestion");
                         inputQueue = Runner::suggestHandle;
                         break;
                     }
                     // Inventory & Items
-                    case "stats": {
+                    case "stats":
+                    {
                         GUI.println("Health:");
                         GUI.println(Inventory.current.health + "/" + Inventory.current.maxHealth);
                     }
                     case "inv":
                     case "inventory":
                     case "show inventory":
-                    case "list inventory": {
+                    case "list inventory":
+                    {
                         Inventory.current.printInventoryList();
                         break;
                     }
                     case "list items":
-                    case "item list": {
+                    case "item list":
+                    {
                         reg.printItems();
                         break;
                     }
                     case "credits":
-                    case "money": {
+                    case "money":
+                    {
                         GUI.println("You have: " + Inventory.current.getCreditsText() + " Credits.");
                         break;
                     }
                     // Resource Gathering
-                        case "mine": {
-                            Tool pick = Inventory.current.findToolOfType(Tool.ToolType.PICKAXE);
-                            if (pick != null) {
-                                if (Math.random() > 0.995)
-                                    {
-                                        new Fight(new Enemy("Cave Monster", 20, 3));
-                                    }
-                                    else
-                                    {
-                                        Item mined = mine.getItem();
-                                        Inventory.current.addItem(mined);
-                                        GUI.println("Mined a " + mined.getName() + ".");
-                                        Inventory.current.addExperience(1);
-                                    }
-                                pick.use();
-                            } else {
-                                GUI.println("No pickaxe in inventory.");
-                            }
-                            break;
-                        }
-                        case "chop":
-                        case "lumber": {
-                            Tool axe = Inventory.current.findToolOfType(Tool.ToolType.AXE);
-                            if (axe != null) {
-                                if (Math.random() > 0.995)
-                                {
-                                    new Fight(new Enemy("Ent", 10, 2));
-                                }
-                                else
-                                {
-                                    int ra = (int)(Math.random() * 4 + 1);
-                                    Inventory.current.addItem(reg.findItem("Log"), ra);
-                                    Inventory.current.addExperience(1);
-                                    if (ra > 1)
-                                    {
-                                        GUI.println("Chopped " + ra + " logs.");
-                                    }
-                                    else
-                                    {
-                                        GUI.println("Chopped a log.");
-                                    }
-                                }
-                                axe.use();
-                            } else {
-                                GUI.println("No axe in inventory.");
-                            }
-                            break;
-                        }
-                        case "forage": {
-                            if (Math.random() > 0.965)
+                    case "mine":
+                    {
+                        Tool pick = Inventory.current.findToolOfType(Tool.ToolType.PICKAXE);
+                        if (pick != null)
+                        {
+                            if (Math.random() > 0.995)
                             {
-                                new Fight(new Enemy("Goblin", 5, 1));
+                                new Fight(new Enemy("Cave Monster", 20, 3));
                             }
                             else
                             {
-                                Item gotten = forest.getItem();
-                                Inventory.current.addItem(gotten);
-                                GUI.println("Found a " + gotten.getName() + ".");
+                                Item mined = mine.getItem();
+                                Inventory.current.addItem(mined);
+                                GUI.println("Mined a " + mined.getName() + ".");
                                 Inventory.current.addExperience(1);
                             }
-                            break;
+                            pick.use();
                         }
-                        case "shop":
-                        case "store": {
-                            GUI.clear();
-                            if (lastShop == null)
+                        else
+                        {
+                            GUI.println("No pickaxe in inventory.");
+                        }
+                        break;
+                    }
+                    case "chop":
+                    case "lumber":
+                    {
+                        Tool axe = Inventory.current.findToolOfType(Tool.ToolType.AXE);
+                        if (axe != null)
+                        {
+                            if (Math.random() > 0.995)
                             {
-                                lastShop = Instant.now();
-                            }
-                            if (currentShop == null)
-                            {
-                                createShop();
-                            }
-
-                            long diff = lastShop.getEpochSecond() + 600 - Instant.now().getEpochSecond();
-
-                            if ((int)diff < 0)
-                            {
-                                lastShop = Instant.now();
-                                createShop();
-                            }
-
-                            if ((int)diff < 0)
-                            {
-                                GUI.println("Shop has reset");
+                                new Fight(new Enemy("Ent", 10, 2));
                             }
                             else
                             {
-                                if (diff % 60 < 10)
+                                int ra = (int)(Math.random() * 4 + 1);
+                                Inventory.current.addItem(reg.findItem("Log"), ra);
+                                Inventory.current.addExperience(1);
+                                if (ra > 1)
                                 {
-                                    GUI.println("Shop will reset in " + (diff / 60) + ":0" + (diff % 60));
+                                    GUI.println("Chopped " + ra + " logs.");
                                 }
                                 else
                                 {
-                                    GUI.println("Shop will reset in " + (diff / 60) + ":" + (diff % 60));
+                                    GUI.println("Chopped a log.");
                                 }
                             }
-                            currentShop.printShop();
-                            GUI.println("What would you like to buy?");
-                            inputQueue = currentShop::buy;
-                            break;
+                            axe.use();
                         }
-        // Unknown
+                        else
+                        {
+                            GUI.println("No axe in inventory.");
+                        }
+                        break;
+                    }
+                    case "forage":
+                    {
+                        if (Math.random() > 0.965)
+                        {
+                            new Fight(new Enemy("Goblin", 5, 1));
+                        }
+                        else
+                        {
+                            Item gotten = forest.getItem();
+                            Inventory.current.addItem(gotten);
+                            GUI.println("Found a " + gotten.getName() + ".");
+                            Inventory.current.addExperience(1);
+                        }
+                        break;
+                    }
+                    case "shop":
+                    case "store":
+                    {
+                        GUI.clear();
+                        if (lastShop == null)
+                        {
+                            lastShop = Instant.now();
+                        }
+                        if (currentShop == null)
+                        {
+                            createShop();
+                        }
+
+                        long diff = lastShop.getEpochSecond() + 600 - Instant.now().getEpochSecond();
+
+                        if ((int)diff < 0)
+                        {
+                            lastShop = Instant.now();
+                            createShop();
+                        }
+
+                        if ((int)diff < 0)
+                        {
+                            GUI.println("Shop has reset");
+                        }
+                        else if (diff % 60 < 10)
+                        {
+                            GUI.println("Shop will reset in " + (diff / 60) + ":0" + (diff % 60));
+                        }
+                        else
+                        {
+                            GUI.println("Shop will reset in " + (diff / 60) + ":" + (diff % 60));
+                        }
+                        currentShop.printShop();
+                        GUI.println("What would you like to buy?");
+                        inputQueue = currentShop::buy;
+                        break;
+                    }
+                    // Fighting
+                    case "hunt":
+                    {
+                        EnemyPool pool = new EnemyPool();
+                        pool.addEnemy(new Enemy("Demon Lord", 250, 12, true), 1);
+                        pool.addEnemy(new Enemy("Goblin", 5, 1), 400);
+                        pool.addEnemy(new Enemy("Slime", 20, 1, true), 200);
+                        pool.addEnemy(new Enemy("Skeleton Archer", 5, 3), 200);
+                        pool.addEnemy(new Enemy("Giant", 45, 5, true), 50);
+
+                        int enemies = 1;
+                        
+                        if (Math.random() > 0.95)
+                        {
+                            enemies = (int)((Math.random() * 3 - 1) + 2);
+                        }
+
+                        Enemy[] listE = new Enemy[enemies];
+
+                        for (int i = 0; i < enemies; i++)
+                        {
+                            listE[i] = pool.getEnemy();
+                        }
+
+                        if (enemies == 1)
+                        {
+                            new Fight(listE[0]);
+                        }
+                        else
+                        {
+                            new GroupFight(listE);
+                        }
+                        
+                        break;
+                    }
+                    // Unknown
                     default: {
-                        GUI.println("Command not recognised.");
+                        if (reg.findItem(consoleInput) != null)
+                        {
+                            Item i = reg.findItem(consoleInput);
+                            inputQueue = Runner::craftCheck;
+                            tempItem = i;
+                            GUI.println("Tier: " + i.getTier());
+                            GUI.println(i.getName());
+                            GUI.println(i.getItemType());
+                            if (i.getItemType().equals("Tool"))
+                            {
+                                Tool t = (Tool)i;
+                                GUI.println(t.getToolType().toString());
+                                if (t.getToolType() != Tool.ToolType.CONSUMABLE)
+                                {
+                                    GUI.println("Durability: " + t.getMaxDurability());
+                                }
+                            }
+                            i.printRecipes();
+                        }
+                        else
+                        {
+                            GUI.println("Command not recognised.");
+                        }
                     }
                 }
             }
         }
-            while (Inventory.current.hasItem(reg.findItem("Wallet")))
-            {
+        while (Inventory.current.hasItem(reg.findItem("Wallet")))
+        {
                 ((Wallet)Inventory.current.getItem("Wallet")).use();  
-            }
+        }
     }
 }

@@ -21,4 +21,9 @@ public class HealingItem extends Tool {
         }
         super.use();
     }
+
+    public int getAmount()
+    {
+        return amount;
+    }
 }

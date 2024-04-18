@@ -61,4 +61,9 @@ public class Tool extends Item
         WEAPON,
         CONSUMABLE
     }
+
+    public int getMaxDurability()
+    {
+        return maxDurability;
+    }
 }

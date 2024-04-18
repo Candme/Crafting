@@ -8,22 +8,38 @@ public class Enemy {
     public int health;
     int maxHealth;
     int attackDamage;
+    boolean healer;
 
     public Enemy(String enemyName, int enemyMaxHealth, int enemyAttackDamage) {
         name = enemyName;
         health = enemyMaxHealth;
         maxHealth = enemyMaxHealth;
         attackDamage = enemyAttackDamage;
+        healer = false;
+    }
+
+    public Enemy(String enemyName, int enemyMaxHealth, int enemyAttackDamage, boolean isHealer) {
+        name = enemyName;
+        health = enemyMaxHealth;
+        maxHealth = enemyMaxHealth;
+        attackDamage = enemyAttackDamage;
+        healer = isHealer;
     }
 
     public void takeDamage(int damage) {
         health -= damage;
         if (health <= 0) {
             GUI.println(name + " has been slain!");
-            int weight = (int)(2 * (health * 0.2) + (damage * 0.25) + 1);
+            int weight = (int)(2 * (health * 0.75 + damage * 1.5 + 1));
             Inventory.current.addExperience(weight);
             GUI.println("Got " + weight + " XP!");
-Inventory.current.addItem(Inventory.current.registry.findItem("Wallet"), weight);
+            double cashToAdd = 0;
+            for (int i = 0; i < weight / 5 + 1; i++)
+            {
+                cashToAdd += (((double)((int)((Math.random() + 1.5) * 245))) / 100) + 0.5;
+            }
+            Inventory.current.addCredits(cashToAdd);
+            GUI.println("Got " + Inventory.current.getCreditsText(cashToAdd) + " credits!");
         }
     }
 
@@ -51,6 +67,11 @@ Inventory.current.addItem(Inventory.current.registry.findItem("Wallet"), weight)
         {
             health = maxHealth;
         }
-        System.out.println(name + " heals for " + amount + " health points.");
+        GUI.println(name + " heals for " + amount + " health points.");
+    }
+
+    public boolean isHealer()
+    {
+        return healer;
     }
 }
