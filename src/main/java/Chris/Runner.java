@@ -250,8 +250,6 @@ public class Runner
             if (inputText.length() < 7)
             {
                 craft(tempItem.getName(), 1);
-                tempItem = null;
-                inputQueue = null;
             }
             else
             {
@@ -259,14 +257,10 @@ public class Runner
                 {
                     int number = Integer.parseInt(inputText.substring(6)); 
                     craft(tempItem.getName(), number);
-                    tempItem = null;
-                    inputQueue = null;
                 }
                 catch (Exception e)
                 {
                     craft(tempItem.getName(), 1);
-                    tempItem = null;
-                    inputQueue = null; 
                 }
             }
         }
@@ -276,8 +270,6 @@ public class Runner
             {
                 HealingItem h = (HealingItem)tempItem;
                 h.use();
-                tempItem = null;
-                inputQueue = null;
             }
             catch (Exception e)
             {
@@ -286,14 +278,10 @@ public class Runner
                     Weapon w = (Weapon)tempItem;
                     w.use();
                     GUI.println("Equipped a " + tempItem.getName() + ".");
-                    tempItem = null;
-                    inputQueue = null;
                 }
                 catch (Exception e2)
                 {
                     GUI.println(tempItem.getName() + " cannot be used.");
-                    tempItem = null;
-                    inputQueue = null;
                 }
             }
         }
@@ -342,44 +330,6 @@ public class Runner
         else
         {
         GUI.clear();
-            if(consoleInput.length() >= 5 && consoleInput.substring(0,5).equals("craft"))
-            {
-                if (consoleInput.length() >= 6)
-                {
-                    String itemToCraft = consoleInput.substring(6);
-                    craft(itemToCraft, 1);
-                }
-                else
-                {
-                    craft("", 1);
-                }
-            }
-            else if(consoleInput.length() >= 12 && consoleInput.substring(0,12).equals("show recipes"))
-            {
-                if (consoleInput.length() >= 13)
-                {
-                    String itemToRecipe = consoleInput.substring(13);
-                    recipes(itemToRecipe);
-                }
-                else
-                {
-                    recipes("");
-                }
-            }
-            else if(consoleInput.length() >= 7 && consoleInput.substring(0,7).equals("recipes"))
-            {
-                if (consoleInput.length() >= 8)
-                {
-                    String itemToRecipe = consoleInput.substring(8);
-                    recipes(itemToRecipe);
-                }
-                else
-                {
-                    recipes("");
-                }
-            }
-            else
-            {
                 consoleInput = consoleInput.toLowerCase();
                 switch (consoleInput)
                 {
@@ -627,7 +577,6 @@ public class Runner
                     }
                 }
             }
-        }
         while (Inventory.current.hasItem(reg.findItem("Wallet")))
         {
                 ((Wallet)Inventory.current.getItem("Wallet")).use();  

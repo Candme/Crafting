@@ -54,7 +54,7 @@ public class GUI
         JPanel main = new JPanel();
         main.setLayout(new BorderLayout());
         main.setBackground(bgColor);
-        mainOutput = new JTextArea("Version 0.2.0: The Combat Update\nType '?' or 'help' for help.\nThis program does not automatically save.\n");
+        mainOutput = new JTextArea("Version 0.2.4: The Combat Update\nType '?' or 'help' for help.\nThis program does not automatically save.\n");
         mainOutput.setEditable(false);
         mainOutput.setBackground(bgColor);
         mainOutput.setBorder(BorderFactory.createEmptyBorder());
@@ -209,21 +209,25 @@ public class GUI
     public static void println()
     {
         currentGUI.mainOutput.setText(currentGUI.mainOutput.getText() + "\n");
+        System.out.println();
     }
     
     public static void println(String s)
     {
         currentGUI.mainOutput.setText(currentGUI.mainOutput.getText() + s + "\n");
+        System.out.println(s);
     }
 
     public static void print(String s)
     {
         currentGUI.mainOutput.setText(currentGUI.mainOutput.getText() + s);
+        System.out.print(s);
     }
 
     public static void clear()
     {
         currentGUI.mainOutput.setText("");
+        System.out.println();
     }
 
     

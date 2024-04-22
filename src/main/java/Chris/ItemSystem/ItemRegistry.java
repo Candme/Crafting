@@ -56,9 +56,9 @@ public class ItemRegistry implements java.io.Serializable {
 
         itemList.add(new Tool("Wooden Pickaxe", 1, 3, Tool.ToolType.PICKAXE));
         itemList.add(new Tool("Stone Pickaxe", 2, 8, Tool.ToolType.PICKAXE));
-        itemList.add(new Tool("Iron Pickaxe", 3, 20, Tool.ToolType.PICKAXE));
-        itemList.add(new Tool("Steel Pickaxe", 4, 50, Tool.ToolType.PICKAXE));
-        itemList.add(new Tool("Damascus Steel Pickaxe", 6, 250, Tool.ToolType.PICKAXE));
+        itemList.add(new Tool("Iron Pickaxe", 3, 30, Tool.ToolType.PICKAXE));
+        itemList.add(new Tool("Steel Pickaxe", 4, 85, Tool.ToolType.PICKAXE));
+        itemList.add(new Tool("Damascus Steel Pickaxe", 6, 300, Tool.ToolType.PICKAXE));
 
         itemList.add(new Item("Iron Pickaxe Head", 3));
         itemList.add(new Item("Steel Pickaxe Head", 4));
@@ -66,17 +66,17 @@ public class ItemRegistry implements java.io.Serializable {
 
         itemList.add(new Tool("Wooden Axe", 1, 3, Tool.ToolType.AXE));
         itemList.add(new Tool("Stone Axe", 2, 7, Tool.ToolType.AXE));
-        itemList.add(new Tool("Iron Axe", 3, 15, Tool.ToolType.AXE));
-        itemList.add(new Tool("Steel Axe", 4, 35, Tool.ToolType.AXE));
-        itemList.add(new Tool("Damascus Steel Axe", 6, 150, Tool.ToolType.AXE));
+        itemList.add(new Tool("Iron Axe", 3, 25, Tool.ToolType.AXE));
+        itemList.add(new Tool("Steel Axe", 4, 75, Tool.ToolType.AXE));
+        itemList.add(new Tool("Damascus Steel Axe", 6, 200, Tool.ToolType.AXE));
 
         itemList.add(new Item("Iron Axe Head", 3));
         itemList.add(new Item("Steel Axe Head", 4));
         itemList.add(new Item("Damascus Steel Axe Head", 6));
 
         itemList.add(new Weapon("Stone Sword", 2, 10, 2));
-        itemList.add(new Weapon("Iron Sword", 3, 15, 5));
-        itemList.add(new Weapon("Steel Sword", 4, 30, 7));
+        itemList.add(new Weapon("Iron Sword", 3, 30, 5));
+        itemList.add(new Weapon("Steel Sword", 4, 70, 8));
 
         itemList.add(new Item("Iron Blade", 3));
         itemList.add(new Item("Steel Blade", 4));
